@@ -9,30 +9,29 @@ library(colourpicker)
 bcl <- read.csv("bcl-data.csv", stringsAsFactors = FALSE)
 
 ui <- fluidPage(
-  titlePanel("BC Liquor Store prices",img(src= "bcliquor_pic.jpg",height = 250, width = 370,align="center")),
+  titlePanel("BC Liquor Store prices"),  # title
   sidebarLayout(
-    sidebarPanel(	      sliderInput("priceInput", "Choose a price range", 0, 100, c(25, 40), pre = "$"),
+    sidebarPanel(	      sliderInput("priceInput", "Choose a price range", 0, 100, c(25, 40), pre = "$"),   #  include slidebar
       radioButtons("typeInput", "Product type",
                   choices = c("BEER", "REFRESHMENT", "SPIRITS", "WINE"),
-                  selected = "WINE"),
-      checkboxInput("sortInput", "Sort Price", value = FALSE),
-      uiOutput("countryOutput"),
+                  selected = "WINE"),  # include radio button
+      checkboxInput("sortInput", "Sort Price", value = FALSE),  # include checkbox
+      uiOutput("countryOutput"),  
       colourInput("col", "Select colour for the barchart","blue",returnName = TRUE, palette = "limited"),
       colourInput("col2", "Select colour for the barchart boundary","Green",returnName = TRUE, palette = "limited"), 
-      textOutput("statement"),
-      downloadButton('ResultData', 'Download Result'),
-      textOutput("statement2"),
-      downloadLink('BclData', 'Click to download data set')
+      textOutput("statement"),   # include statement
+      downloadButton('ResultData', 'Download Result'), # for download button
+      textOutput("statement2"),  # include statement
+      downloadLink('BclData', 'Click to download data set')  # for download link
       
     ),
     
     mainPanel(  tabsetPanel(
-      tabPanel(img(src= "bcliquor_pic.jpg",height = 250, width = 370,align="center")),
-      tabPanel(img(src= "bg-liquor-store-2.jpg",height = 250, width = 370,align="right")),
-      tabPanel(plotOutput("coolplot",height = 400, width = 800)),
-      br(), br(),
-      tabPanel(DT::dataTableOutput("results") ),
-      br(), br()
+      tabPanel(img(src= "bcliquor_pic.jpg",height = 250, width = 370,align="center")),  # include image
+      tabPanel(img(src= "bg-liquor-store-2.jpg",height = 250, width = 370,align="right")),  # include image
+      tabPanel(plotOutput("coolplot",height = 400, width = 800)),   # include plot
+      br(), br(),    # two lines break
+      tabPanel(DT::dataTableOutput("results") )  # include table
       )
       )
 )  )
@@ -69,14 +68,7 @@ server <- function(input, output) {
     	Temp 
     }
     
-    
-    
-    
-  })
-  
-  
-  
-  
+})
   
  
   
@@ -97,10 +89,8 @@ server <- function(input, output) {
   
   
     output$statement <- renderText({
-    	
-    		paste("We found", toString(dim(filtered())[1]) ,  "options for you")    	
-    			
-  })
+   	paste("We found", toString(dim(filtered())[1]) ,  "options for you")    	
+   })
     
     
     output$statement2 <- renderText({
@@ -117,11 +107,7 @@ server <- function(input, output) {
     		write.csv(filtered(),con)
     	}
     )
-    
-    
-    
-    
-    
+  
     output$BclData <- downloadHandler(
     	  filename = function() {
     	    paste('bcl', Sys.Date(), '.csv', sep='')
